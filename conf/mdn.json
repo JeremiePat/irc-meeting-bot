@@ -1,0 +1,59 @@
+{
+  "server"  : "irc.mozilla.org",
+  "output"  : "MarkDown",
+  "channels": ["#mdn"],
+  "commands": [{
+    "type"  : "begin",
+    "name"  : "greatings",
+    "match" : "^It's meeting time \\o/$",
+    "call"  : false,
+    "help"  : "Start the meeting by saying \"It's meeting time \\o/\""
+  },{
+    "type"  : "end",
+    "name"  : "ending",
+    "match" : "Happy writing and see you next week :\\)",
+    "call"  : false,
+    "help"  : "End the meeting by saying \"Happy writing and see you next week :)\""
+  },{
+    "type"  : "end",
+    "name"  : "format",
+    "match" : "format\\s*",
+    "help"  : "Call me with 'format' to get the minutes done (this will end the meeting). If you don't want to use the default format, you can add a format: It can be 'raw', 'MarkDown', 'WikiMedia', or 'HTML'"
+  },{
+    "type"  : "record",
+    "name"  : "ACTION",
+    "match" : "^ACTION\\s*:?\\s+",
+    "call"  : false,
+    "label" : "Action items",
+    "help"  : "To record an action item, just type 'ACTION' followed by what must be record"
+  },{
+    "type"  : "section",
+    "name"  : "section",
+    "match" : "^---\\s*",
+    "call"  : false,
+    "help"  : "Type '---' follow by a section name to create that section"
+  }],
+  "l10n": {
+    "hi": [],
+    "begin": [
+      "Ready to rumble!",
+      "The court is now in session.",
+      "I wish you a peacefull meeting",
+      "Here we go!"
+    ],
+    "end": [
+      "We're done, thank you all",
+      "I'm done, bye!",
+      "That was a good meeting"
+    ],
+    "record": [
+      "Got it!",
+      "I'm at your service, master.",
+      "I get it done :)",
+      "Aye, aye sir!",
+      "I'll remind that.",
+      "So... it's recorded.",
+      "In the era to come, your commitment will be salute."
+    ]
+  }
+}
