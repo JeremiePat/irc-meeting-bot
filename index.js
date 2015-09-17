@@ -3,7 +3,8 @@
 // ============================================================================
 // Usage
 // ```bash
-// $ node meeting.js -c config.json
+// $ npm install
+// $ node index.js -f config.json
 // ```
 //
 // The JSON file is used to configure all the required info to record a meeting
@@ -61,10 +62,24 @@
 //                         (Default: 'Minutes has been formated.')
 // `hi`     : : <array>  : Display when the bot join a channel
 //                         (Default: 'Hi! I'm ready to record your meeting')
+//
+// Some configurations can be set or override through command line with the
+// following options:
+//
+//  -s --server   Indicate the IRC server to connect with
+//  -p --port     Indicate the port to use
+//  -o --output   Indicate the output format to use (one of those available in
+//                ./lib/format)
+//  -u --username The user name to use to connect
+//  -r --realname The real name to use to connect
+//  -a --channels A channel to connect to
+//  -d --dir      Indicate in which directory generated minutes must be stored
+//                Default: './logs'
 'use strict';
 
 // Modules needed
 // ----------------------------------------------------------------------------
+var path     = require('path');
 var cli      = require('cli');
 var jsonfile = require('jsonfile');
 var loggy    = require('loggy');
@@ -77,21 +92,40 @@ cli.enable('version');
 cli.setApp('irc-meetingbot','0.0.1');
 
 cli.parse({
-  config: ['c', 'Define the bot configuration file', 'file']
+  config   : ['f', 'Define the bot configuration file', 'file'],
+  server   : ['s', 'Define the server to connect', 'domain'],
+  port     : ['p', 'Define on which port to connect', 'number'],
+  output   : ['o', 'Define the output format for the minutes', 'string'],
+  userName : ['u', 'Define the user name to display in channels', 'string'],
+  realName : ['r', 'Define the real name to provide to the server', 'string'],
+  channels : ['c', 'Define the channel to join', 'string'],
+  dir      : ['d', 'Define where to store the generated minutes', 'path']
 });
 
 cli.main(function (args, options) {
-  jsonfile.readFile(options.config, function (err, cfg) {
-    if (err) {
-      loggy.error('Unable to read config:', err);
-      return;
-    }
+  var cfg;
 
+  if (options.config) {
     try {
-      var bot = new Bot(cfg);
-      bot.connect();
-    } catch (e) {
-      loggy.error(e);
-    }
-  });
+      cfg = jsonfile.readFileSync(options.config);
+    } catch (e) {}
+  }
+
+  cfg = cfg || {};
+
+  // Command line arguments override configuration files
+  if (options.server)   { cfg.server   = options.server;            }
+  if (options.port)     { cfg.port     = options.port;              }
+  if (options.output)   { cfg.output   = options.output;            }
+  if (options.userName) { cfg.userName = options.userName;          }
+  if (options.realName) { cfg.realName = options.realName;          }
+  if (options.channels) { cfg.channels = options.channels;          }
+  if (options.dir)      { cfg.dir      = path.resolve(options.dir); }
+
+  try {
+    var bot = new Bot(cfg);
+    bot.connect();
+  } catch (e) {
+    loggy.error(e);
+  }
 });
