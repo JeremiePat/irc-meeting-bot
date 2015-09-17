@@ -38,7 +38,7 @@ json object with the following properties:
 | Property   | Value          | Notes
 | ---------- | -------------- | --------------
 | `server`  *| <string>       | (Mandatory) The IRC server to connect to.
-| `channels` | <array|string> | (Mandatory) A channel or list of channels the bot must join
+| `channels` | <array> or <string> | (Mandatory) A channel or list of channels the bot must join
 | `port`     | <number>       | The port of the IRC server (default: 6667)
 | `userName` | <string>       | The user name to use (default: 'MeetingBot')
 | `realName` | <string>       | The user real name (default: 'MeetingBot')
