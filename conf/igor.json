@@ -1,0 +1,48 @@
+{
+  "userName": "Igor",
+  "commands": [{
+    "type"  : "begin",
+    "name"  : "Listen",
+    "help"  : "Tell Igor to listen everything said."
+  },{
+    "type"  : "end",
+    "name"  : "Clean the room!",
+    "help"  : "Tell Igor to stop listening everything and to produce the minutes"
+  },{
+    "type"  : "record",
+    "name"  : "Remember",
+    "match" : "remember\\s*:?\\s+",
+    "label" : "Igor memories",
+    "help"  : "Tell Igor what he must remember"
+  },{
+    "type"  : "section",
+    "name"  : "We are discussing",
+    "match" : "We are discussing\\s*:?\\s+",
+    "help"  : "Tell Igor to notice a discussion topic"
+  }],
+  "l10n": {
+    "hi": [
+      "I'm at your service, master."
+      "I'm your humble servant, master."
+    ],
+    "begin": [
+      "Yes master, I'll listen carefully."
+      "I'm your hears, master."
+      "As you please, master."
+    ],
+    "record": [
+      "Yes master!",
+      "It's duly noted, master.",
+      "So be it, master."
+    ],
+    "end": [
+      "I'm now deaf, master."
+      "My service is done, master."
+    ],
+    "format": [
+      "The room is clean, master."
+      "What must be done is done, master."
+      "You'll find what you need where it belongs, master"
+    ]
+  }
+}
