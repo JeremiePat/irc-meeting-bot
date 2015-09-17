@@ -1,4 +1,4 @@
 irc-meeting-bot
 -------------------------------------------------------------------------------
 
-A simple IRC bot to recard meeting minutes
+A simple IRC bot to record meeting minutes
