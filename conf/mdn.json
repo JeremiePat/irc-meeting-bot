@@ -1,6 +1,6 @@
 {
   "server"  : "irc.mozilla.org",
-  "output"  : "MarkDown",
+  "output"  : "wikimedia",
   "channels": ["#mdn"],
   "commands": [{
     "type"  : "begin",
@@ -29,9 +29,15 @@
   },{
     "type"  : "section",
     "name"  : "section",
-    "match" : "^---\\s*",
+    "match" : "---\\s*",
     "call"  : false,
     "help"  : "Type '---' follow by a section name to create that section"
+  },{
+    "type"  : "section",
+    "name"  : "section",
+    "match" : "(?:Next|Last|First) topic is:?\\s*",
+    "call"  : false,
+    "help"  : "Type 'Next topic is' follow by a topic name to create the related section"
   }],
   "l10n": {
     "hi": [],
