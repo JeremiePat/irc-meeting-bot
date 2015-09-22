@@ -45,7 +45,8 @@ cli.main(function (args, options) {
   cfg.userName = options.userName          || cfg.userName;
   cfg.realName = options.realName          || cfg.realName;
   cfg.channels = options.channels          || cfg.channels;
-  cfg.dir      = path.resolve(options.dir) || cfg.dir;
+  cfg.dir      = (typeof options.dir === 'string' &&
+                  path.resolve(options.dir)) || cfg.dir;
 
   try {
     bot = new Bot(cfg);
