@@ -28,7 +28,7 @@
   "freeze"      : false,
   "nonew"       : true,
   "plusplus"    : false,
-  "maxparams"   : 3,
+  "maxparams"   : 5,
   "maxdepth"    : 5,
   "jquery"      : false,
   "globals" : {
