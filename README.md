@@ -24,10 +24,12 @@ $ node index.js -f config.json
 -r --realname The real name to use to connect
 -a --channels A channel to join
 -d --dir      Indicate in which directory generated minutes must be stored (Default: './logs')
+-l --locale   Indicate the locale the bot must use when speaking and recording stuff
 -f --config   The location of the configuration file to use
 ```
 
-If used, those command line options always override those set in a configuration file.
+If used, those command line options always override those set in a
+configuration file.
 
 ## Configuration
 
@@ -42,9 +44,10 @@ json object with the following properties:
 | `port`     | _number_            | The port of the IRC server <br>(Default: 6667)
 | `userName` | _string_            | The user name to use <br>(Default: 'MeetingBot')
 | `realName` | _string_            | The user real name <br>(Default: 'MeetingBot')
-| `commands` | _array_             | A list of command object (see below) defining command to be used during the meeting <br>(Default: `start`, `end` and `help` are defined)
+| `commands` | _object_            | A list of named command object (see below) defining command to be used during the meeting <br>(Default: `start`, `end` and `help` are defined)
 | `output`   | _string_            | Define the output format: `wikimedia`, `markdown`, `HTML`, or `raw` <br>(Default: 'raw')
-| `l10n`     | _object_            | An l10n object (see below) overriding all the localization options and strings used by the bot.
+| `locale`   | _string_            | The default locale to use (used for time formating and L10NString)<br>(Default: en)
+| `speech`   | _object_            | A speech object (see below) to handle the strings to be used when the bot is acknowledging commands
 
 ### Command object
 
@@ -54,28 +57,53 @@ customized through command object:
 | Property   | Value    | Notes
 | ---------- | -------- | --------------
 | `type`     | _string_ | (Mandatory) There are five type of command : <br>`record` put the msg in a list at the end of the log; <br>`section` start a new section in the minutes; <br>`begin` start recording the meeting; <br>`end` end recording the meeting; <br>`help` provide help on how to use the bot
-| `name`     | _string_ | (Mandatory) Then human readable name of the command
 | `match`    | _string_ | A string (which will be turn into a case insensitive RegExp) that must match in a message to call the command <br>(Default: Any message starting with the command's name)
 | `call`     | _true_ or _false_ | Indicate if the message must be prefix with the name of the bot and a colon to look for the command <br>(Default: true)
 | `label`    | _string_ | The label of the corresponding `record` section within the generated minutes <br>(Default: the command's `name`)
 | `help`     | _string_ | The help text for the command
+| `speech`   | _string_ | A speech id (from the speech object below) to handle bot answers when the command is invoked<br>(Default: the command's type)
 
-### l10n object
+### Speech object
 
-An l10n object to customized the various bot output. It expect the following
-parameters (none is mandatory):
+A speech object is used to customized the various bot output. Each key of the
+object is used as a reference. It can be any key reference by a command object
+or one of the key normalized below.
 
-| Property   | Value    | Notes
-| ---------- | -------- | --------------
-| `locale`   | _string_ | The locale code in use <br>(Default: en)
-| `time`     | _string_ | The format for the time record with each IRC message following the [Moment](http://momentjs.com/) syntax <br>(Default: 'HH:mm')
-| `nohelp`   | _array_  | An array of possible strings to display when no help is available <br>(Default: 'Sorry, no help available!')
-| `record`   | _array_  | Display when the bot acknowledge a `record` command <br>(Default: 'Record done.')
-| `begin`    | _array_  | Display when the bot acknowledge a `begin` command <br>(Default: 'Meeting is recorded now')
-| `end`      | _array_  | Display when the bot acknowledge a `end` command <br>(Defaut: 'Meeting is over.')
-| `format`   | _array_  | Display when the bot has output the minutes <br>(Default: 'Minutes has been formated.')
-| `hi`       | _array_  | Display when the bot join a channel <br>(Default: 'Hi! I'm ready to record your meeting')
+The value for each key can be either:
+ * A string
+ * An array of strings
+ * An L10NString definition (see below)
+ * An array of L10NString definition
 
-Note that every where an array of string is expected, if more than one string
-is provide, the string to display is picked at random. On the other end, An
-empty array indicate that the bot will remain silent.
+If the values are a string or an array of strings, they are considered to be
+written in the locale provide by the configuration.
+
+Note that when an array is provided, if it has more than one string, the string
+to display is picked at random. On the other end, An empty array or empty
+string indicate that the bot will remain silent.
+
+#### Normalized key:
+
+> __NOTE:__ _Some keys accept parameters. parameters, enclosed within double
+  brackets, are placeholder filled automatically_
+
+| Key         | Default                                 | Parameters
+| ----------- | --------------------------------------- | -------------------
+| `begin`     | Meeting is recorded now.                | _none_
+| `end`       | Meeting is over.                        | _none_
+| `format`    | Minutes has been formated ({{format}}). | `format`: The format used to produce the minutes
+| `help`      | {{help}}                                | `help`: The help string for the requested commands
+| `hi`        | Hi! I'm ready to record your meeting    | _none_
+| `nohelp`    | Sorry, no help available!               | _none_
+| `reconnect` | Sorry, I've been kicked out!            | _none_
+| `record`    | Record done.                            | _none_
+| `section`   | > {{title}}                             | `title`: The title of the new section
+
+
+### L10NString object
+
+An L10NString object is a string definition in several locale. It make easy to
+configure bots able to speak different language.
+
+Such an object is a collection of key/value, where the key is the locale name
+and the value the associated string.
