@@ -24,7 +24,8 @@ cli.parse({
   userName : ['u', 'Define the user name to display in channels',   'string'],
   realName : ['r', 'Define the real name to provide to the server', 'string'],
   channels : ['c', 'Define the channel to join',                    'string'],
-  dir      : ['d', 'Define where to store the generated minutes',   'path'  ]
+  dir      : ['d', 'Define where to store the generated minutes',   'path'  ],
+  locale   : ['l', 'Define the locale to be used by the bot when speaking']
 });
 
 cli.main(function (args, options) {
@@ -45,6 +46,7 @@ cli.main(function (args, options) {
   cfg.userName = options.userName          || cfg.userName;
   cfg.realName = options.realName          || cfg.realName;
   cfg.channels = options.channels          || cfg.channels;
+  cfg.locale   = options.locale            || cfg.locale;
   cfg.dir      = (typeof options.dir === 'string' &&
                   path.resolve(options.dir)) || cfg.dir;
 
