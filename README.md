@@ -24,7 +24,7 @@ $ node index.js -f config.json
 -r --realname The real name to use to connect
 -a --channels A channel to join
 -d --dir      Indicate in which directory generated minutes must be stored (Default: './logs')
--l --locale   Indicate the locale the bot must use when speaking and recording stuff
+-l --locale   Indicate the locale the bot must use when speaking and recording stuff (Default: 'en')
 -f --config   The location of the configuration file to use
 ```
 
@@ -33,14 +33,14 @@ configuration file.
 
 ## Configuration
 
-To fine tune your bot, the best way to do it is to set a configuration file. An
-example is available in the [conf](./conf) directory. Such configuration is a
+To fine tune your bot, the best way to do it is to set a configuration file.
+examples are available in the [conf](./conf) directory. Such configuration is a
 json object with the following properties:
 
 | Property   | Value               | Notes
 | ---------- | ------------------- | --------------
-| `server`   | _string_            | (Mandatory) The IRC server to connect to.
-| `channels` | _array_ or _string_ | (Mandatory) A channel or list of channels the bot must join
+| `server`   | _string_            | The IRC server to connect to.<br>_Must be set through cli if not define_
+| `channels` | _array_ or _string_ | A channel or list of channels the bot must join.<br>_Must be set through cli if not define_
 | `port`     | _number_            | The port of the IRC server <br>(Default: 6667)
 | `userName` | _string_            | The user name to use <br>(Default: 'MeetingBot')
 | `realName` | _string_            | The user real name <br>(Default: 'MeetingBot')
@@ -57,17 +57,20 @@ customized through command object:
 | Property   | Value    | Notes
 | ---------- | -------- | --------------
 | `type`     | _string_ | (Mandatory) There are five type of command : <br>`record` put the msg in a list at the end of the log; <br>`section` start a new section in the minutes; <br>`begin` start recording the meeting; <br>`end` end recording the meeting; <br>`help` provide help on how to use the bot
-| `match`    | _string_ | A string (which will be turn into a case insensitive RegExp) that must match in a message to call the command <br>(Default: Any message starting with the command's name)
+| `match`    | _string_ | A string (which will be turned into a case insensitive RegExp) to match in a message in order to call the command <br>(Default: Any message starting with the command's name)
 | `call`     | _true_ or _false_ | Indicate if the message must be prefix with the name of the bot and a colon to look for the command <br>(Default: true)
-| `label`    | _string_ | The label of the corresponding `record` section within the generated minutes <br>(Default: the command's `name`)
-| `help`     | _string_ | The help text for the command
-| `speech`   | _string_ | A speech id (from the speech object below) to handle bot answers when the command is invoked<br>(Default: the command's type)
+| `label`    | _string_ | The label of the corresponding `record` section within the generated minutes <br>(Default: the command's name)
+| `help`     | _string_ | The help text for the command, it can be either a string, , an array of string, an L10NString, or an array of L10NString
+| `speech`   | _string_ | A speech id (from the speech object below) to handle the bot answers when the command is invoked<br>(Default: the command's type)
+
+> __NOTE:__ _The command's name is the key use to reference the command within
+  the object attach to the `commands` property of the configuration object._
 
 ### Speech object
 
 A speech object is used to customized the various bot output. Each key of the
 object is used as a reference. It can be any key reference by a command object
-or one of the key normalized below.
+or one of the keys normalized below.
 
 The value for each key can be either:
  * A string
@@ -79,7 +82,7 @@ If the values are a string or an array of strings, they are considered to be
 written in the locale provide by the configuration.
 
 Note that when an array is provided, if it has more than one string, the string
-to display is picked at random. On the other end, An empty array or empty
+to display is picked at random. On the other hand, An empty array or empty
 string indicate that the bot will remain silent.
 
 #### Normalized key:
@@ -102,8 +105,8 @@ string indicate that the bot will remain silent.
 
 ### L10NString object
 
-An L10NString object is a string definition in several locale. It make easy to
-configure bots able to speak different language.
+An L10NString object is a string defined for several locale. It makes easy to
+configure bots able to speak different languages.
 
-Such an object is a collection of key/value, where the key is the locale name
+Such an object is a collection of key/value pairs, where the key is the locale name
 and the value the associated string.
