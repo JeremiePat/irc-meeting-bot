@@ -6,15 +6,15 @@
   "commands": {
     "greatings": {
       "type"   : "begin",
-      "match"  : "^It's meeting time .*$",
+      "match"  : "^It's meeting time.*$",
       "call"   : false,
       "help"   : "Start the meeting by saying \"It's meeting time\""
     },
     "ending"   : {
       "type"   : "end",
-      "match"  : "Happy writing and see you next week",
+      "match"  : "Happy writing and see you next (?:week|time)",
       "call"   : false,
-      "help"   : "End the meeting by saying 'Happy writing and see you next week :)'"
+      "help"   : "End the meeting by saying 'Happy writing and see you next week'"
     },
     "format"   : {
       "type"   : "end",
@@ -37,7 +37,7 @@
     },
     "topic"    : {
       "type"   : "section",
-      "match"  : "(?:Next|Last|First) topic (?:is:?)?\\s*",
+      "match"  : "(?:Next|Last|First) topic(?:\\sis\\s?:?)?\\s*",
       "call"   : false,
       "help"   : "Type 'Next topic is ' follow by a topic name to create the related section"
     }
