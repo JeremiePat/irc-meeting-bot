@@ -14,7 +14,7 @@ var Bot      = require('./lib/bot');
 // Launch bot
 // ----------------------------------------------------------------------------
 cli.enable('version');
-cli.setApp('irc-meeting-bot', '1.0.0');
+cli.setApp('irc-meeting-bot', '1.1.0');
 
 cli.parse({
   config   : ['f', 'Define the bot configuration file',             'file'  ],
