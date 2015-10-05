@@ -12,14 +12,14 @@
     },
     "ending"   : {
       "type"   : "end",
-      "match"  : "Happy writing and see you next (?:week|time)",
+      "match"  : "Happy writing and see you next (?:week|time)\\s(?:\\:-?\\))?",
       "call"   : false,
       "help"   : "End the meeting by saying 'Happy writing and see you next week'"
     },
     "format"   : {
       "type"   : "end",
       "name"   : "format",
-      "match"  : "format\\s*",
+      "match"  : "format\\s*:?\\s*",
       "help"   : "Call me with 'format' to get the minutes done (this will end the meeting). If you don't want to use the default format, you can add a format: It can be 'raw', 'MarkDown', 'WikiMedia', or 'HTML'"
     },
     "action"   : {
